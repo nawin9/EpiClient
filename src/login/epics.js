@@ -19,7 +19,6 @@ const loginEpic = action$ =>
             push({ url: '/' });
             return loginSuccess(response);
         }),
-        // map(response => loginSuccess(response)),
         catchError(error => loginFailure(error))
     );
 

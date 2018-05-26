@@ -3,6 +3,7 @@ import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE } from './actions';
 
 const initialState = {
     isLoading: false,
+    token: null,
     errors: [],
 };
 
@@ -23,6 +24,7 @@ function loginReducer(state = initialState, action) {
             return {
                 ...state,
                 isLoading: false,
+                token: action.payload.token,
             };
         default:
             return state;
