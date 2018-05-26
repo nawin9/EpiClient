@@ -1,31 +1,26 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import './index.css';
-// import App from './App';
-// import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import { render } from "react-dom";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "react-router-redux";
+import store, { history } from "./store";
+import registerServiceWorker from "./registerServiceWorker";
 
-// ReactDOM.render(<App />, document.getElementById('root'));
-// registerServiceWorker();
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import routes from "./routes";
+import "./index.css";
 
-import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import store, { history } from './store';
-import App from './containers/app';
-
-// import 'sanitize.css/sanitize.css';
-import './index.css';
-
-const target = document.querySelector('#root');
-
-render(
+const App = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <div>
-        <App />
+      <div className="App">
+        <Header />
+        <div className="wrap">{routes}</div>
+        <Footer />
       </div>
     </ConnectedRouter>
-  </Provider>,
-  target
+  </Provider>
 );
+
+render(<App />, document.getElementById("root"));
+registerServiceWorker();

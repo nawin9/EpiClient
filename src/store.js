@@ -1,36 +1,26 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import { routerMiddleware } from 'react-router-redux'
-import thunk from 'redux-thunk'
-import createHistory from 'history/createBrowserHistory'
-import rootReducer from './modules'
-// import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, applyMiddleware } from "redux";
+import { createEpicMiddleware } from "redux-observable";
+import createHistory from "history/createHashHistory";
+import { routerMiddleware } from "react-router-redux";
 
-export const history = createHistory()
+import rootEpic from "./rootEpic";
+import rootReducer from "./rootReducer";
+// import queryString from 'query-string';
 
-const initialState = {}
-const enhancers = []
-const middleware = [
-  thunk,
-  routerMiddleware(history)
-]
+export const history = createHistory();
 
-if (process.env.NODE_ENV === 'development') {
-  const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__
-
-  if (typeof devToolsExtension === 'function') {
-    enhancers.push(devToolsExtension())
+const epicMiddleware = createEpicMiddleware(rootEpic, {
+  dependencies: {
+    // queryString,
   }
-}
+});
 
-const composedEnhancers = compose(
-  applyMiddleware(...middleware),
-  ...enhancers
-)
+const appRouterMiddleware = routerMiddleware(history);
 
 const store = createStore(
   rootReducer,
-  initialState,
-  composedEnhancers
-)
+  applyMiddleware(epicMiddleware),
+  applyMiddleware(appRouterMiddleware)
+);
 
-export default store
+export default store;
